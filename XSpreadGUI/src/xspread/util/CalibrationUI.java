@@ -117,7 +117,7 @@ public class CalibrationUI {
 					tile.setFill(ColorUtils.jet(val,0,maxVal));
 				    tile.setValue(val);
 					
-					if(selsp.containsKey(rates[i]) && calsp.get(rates[i]).containsKey(distances[j])){
+					if(selsp.containsKey(rates[i]) && selsp.get(rates[i]).containsKey(distances[j])){
 		                tile.highlight();
 		                tile.selected=true;
 					}

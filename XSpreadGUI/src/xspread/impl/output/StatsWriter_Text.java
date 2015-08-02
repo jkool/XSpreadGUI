@@ -120,7 +120,7 @@ public class StatsWriter_Text implements StatsWriter {
 			sb.append(exp.getTime() + ",");
 			sb.append(distances[i] + ",");
 			sb.append(rates[i] + ",");
-			sb.append(replicate.toString() + ",");
+			sb.append((replicate.intValue()+1) + ",");
 
 			// generate statistics
 

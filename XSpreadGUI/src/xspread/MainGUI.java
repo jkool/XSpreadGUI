@@ -366,7 +366,7 @@ public class MainGUI extends Application {
 		ButtonType buttonTypeNo = new ButtonType("No");
 
 		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
+		
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes) {
 			sp.setRunType("calibration");
@@ -475,5 +475,4 @@ public class MainGUI extends Application {
 			return Integer.signum(vals1.length - vals2.length);
 		}
 	}
-
 }
