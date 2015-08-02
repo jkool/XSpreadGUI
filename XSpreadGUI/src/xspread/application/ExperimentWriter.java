@@ -1,0 +1,34 @@
+/*******************************************************************************
+ * Copyright Charles Darwin University 2014. All Rights Reserved.  
+ * For review only, not for distribution.
+ *******************************************************************************/
+package xspread.application;
+
+import java.io.IOException;
+import java.util.Set;
+
+/**
+ *  Interface for writing Experiment Output
+ */
+
+public interface ExperimentWriter {
+	
+	/**
+	 * Closes the writer
+	 */
+	public void close();
+	
+	/**
+	 * Opens the writer
+	 * @param speciesSet - the set of Species to be written (they must exist)
+	 * @throws IOException
+	 */
+	public void open(Set<String> speciesSet) throws IOException;
+	
+	/**
+	 * Writes the Experiment data to output
+	 * @param exp
+	 */
+	public void write(Experiment exp);
+
+}
