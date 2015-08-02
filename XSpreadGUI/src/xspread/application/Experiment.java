@@ -4,16 +4,16 @@
  *******************************************************************************/
 package xspread.application;
 
-import xspread.impl.output.MosaicWriter_Raster;
-import xspread.impl.output.MosaicWriter_Raster_Stage;
-import xspread.impl.output.MosaicWriter_Raster_WasMonitored;
-import xspread.impl.output.StatsWriter_Text;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import xspread.impl.output.MosaicWriter_Raster;
+import xspread.impl.output.MosaicWriter_Raster_Stage;
+import xspread.impl.output.MosaicWriter_Raster_WasMonitored;
+import xspread.impl.output.StatsWriter_Text;
 
 /**
  * This class is used to apply Processes to a Mosaic over time. Time is handled
@@ -39,7 +39,6 @@ public class Experiment implements Cloneable {
 	private String identifier = "";
 	private boolean writeEachTimeStep = false;
 	private boolean writeEachMgtStep = false;
-	private boolean writeEachCostStep = true;
 	private boolean writeTraceFile = false;
 
 	/**

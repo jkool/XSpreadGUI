@@ -16,14 +16,14 @@ import java.util.TreeMap;
 
 import xspread.application.Experiment;
 import xspread.application.ExperimentWriter;
+import xspread.application.Infestation;
 import xspread.application.Mosaic;
 import xspread.application.MosaicWriter;
-import xspread.application.Infestation;
 import xspread.application.Process;
 import xspread.impl.RasterMosaic;
+import xspread.impl.process.Process_Costing;
 import xspread.util.RasterWriter;
 import xspread.util.Stats;
-import xspread.impl.process.Process_Costing;
 
 /**
  * Used to write Experiment-level output to output files, including number of

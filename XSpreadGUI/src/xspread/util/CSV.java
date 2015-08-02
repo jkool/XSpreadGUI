@@ -20,8 +20,8 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 public class CSV extends File {

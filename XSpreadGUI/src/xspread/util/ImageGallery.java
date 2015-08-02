@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import xspread.MainGUI;
-import xspread.application.SpreadProperties;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -37,6 +34,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import xspread.MainGUI;
+import xspread.application.SpreadProperties;
 
 public class ImageGallery {
 
@@ -59,6 +58,7 @@ public class ImageGallery {
 
 		rasterTypeComboBox.setOnAction(event -> {
 			Platform.runLater(new Runnable() {
+				@Override
 				public void run() {
 					getGallery();
 				}
@@ -82,6 +82,7 @@ public class ImageGallery {
 		GridPane mainPane = new GridPane();
 		secondRoot.getChildren().add(mainPane);
 		secondaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+			@Override
 			public void handle(WindowEvent event) {
 				killProcess = true;
 				System.out.println("Cancelled.");
@@ -222,7 +223,7 @@ public class ImageGallery {
 					if (mouseEvent.getClickCount() == 1) {
 						
 						if(selected!=null){
-							Label old_select = (Label) selected;
+							Label old_select = selected;
 							old_select.setStyle("-fx-border-color: transparent;");
 						}
 
@@ -263,6 +264,7 @@ public class ImageGallery {
 	private void setImagePan(ImageView iv) {
 		iv.setOnMousePressed(new EventHandler<MouseEvent>() {
 
+			@Override
 			public void handle(MouseEvent event) {
 				root.setCursor(Cursor.MOVE);
 				dragBaseX = iv.translateXProperty().get();
@@ -273,20 +275,24 @@ public class ImageGallery {
 		});
 
 		iv.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent event) {
 				iv.setTranslateX(dragBaseX + (event.getSceneX() - dragBase2X));
 				iv.setTranslateY(dragBaseY + (event.getSceneY() - dragBase2Y));
 			}
 		});
 		iv.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent event) {
 				root.setCursor(Cursor.DEFAULT);
 			}
 		});
 
 		iv.setOnScroll(new EventHandler<ScrollEvent>() {
+			@Override
 			public void handle(ScrollEvent event) {
 				Platform.runLater(new Runnable() {
+					@Override
 					public void run() {
 						double dy = event.getDeltaY();
 						if (dy == 0) {
@@ -325,6 +331,7 @@ public class ImageGallery {
 				if (!species.equals(speciesList.getValue())) {
 					species = speciesList.getValue();
 					Platform.runLater(new Runnable() {
+						@Override
 						public void run() {
 							getGallery();
 						}

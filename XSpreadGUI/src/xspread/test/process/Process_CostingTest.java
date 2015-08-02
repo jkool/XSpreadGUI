@@ -4,7 +4,7 @@
  *******************************************************************************/
 package xspread.test.process;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,15 +14,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import xspread.impl.RasterMosaic;
-import xspread.impl.process.Process_Costing;
-import xspread.impl.process.Process_Monitor;
-import xspread.util.ControlType;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import xspread.application.Patch;
+import xspread.impl.RasterMosaic;
+import xspread.impl.process.Process_Costing;
+import xspread.impl.process.Process_Monitor;
+import xspread.util.ControlType;
 
 public class Process_CostingTest {
 

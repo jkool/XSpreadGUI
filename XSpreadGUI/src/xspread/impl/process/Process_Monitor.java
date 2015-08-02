@@ -13,13 +13,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
-
-import cern.jet.random.Uniform;
 import xspread.util.ControlType;
+import cern.jet.random.Uniform;
 
 /**
  * Performs operations on a Mosaic pertaining to monitoring infestation status.

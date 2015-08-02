@@ -10,15 +10,14 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
+import xspread.util.ControlType;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-
-import xspread.util.ControlType;
 
 /**
  * This is ground control to Major Tom. Commencing countdown, engines on...

@@ -15,6 +15,7 @@ public class RegExFilter implements FilenameFilter {
 		this.pattern = pattern;
 	}
 
+	@Override
 	public boolean accept(File dir, String name) {
 		return name.toLowerCase().matches(pattern);
 	}

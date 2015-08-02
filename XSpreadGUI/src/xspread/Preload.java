@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 public class Preload extends Preloader {
 	
+	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 	}

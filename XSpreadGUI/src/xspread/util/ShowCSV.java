@@ -14,18 +14,18 @@ import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ShowCSV extends Application{
 
-    public void start(Stage primaryStage) {
+    @Override
+	public void start(Stage primaryStage) {
     final BorderPane root = new BorderPane();
     final TableView<ObservableList<StringProperty>> table = new TableView<>();
-    String split = ",";
     
     /*final TextField urlTextEntry = new TextField();
     urlTextEntry.setPromptText("Enter URL of tab delimited file");

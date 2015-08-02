@@ -50,7 +50,8 @@ public class Main extends Application {
 
         startButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            public void handle(ActionEvent event) {
+            @Override
+			public void handle(ActionEvent event) {
                 startButton.setDisable(true);
                 progressBar.setProgress(0);
                 cancelButton.setDisable(false);
@@ -60,7 +61,8 @@ public class Main extends Application {
                 progressBar.progressProperty().bind(copyWorker.progressProperty());
                
                 copyWorker.messageProperty().addListener(new ChangeListener<String>() {
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    @Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                         System.out.println(newValue);
                     }
                 });
@@ -69,7 +71,8 @@ public class Main extends Application {
             }
         });
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
+            @Override
+			public void handle(ActionEvent event) {
                 startButton.setDisable(false);
                 cancelButton.setDisable(true);
                 copyWorker.cancel(true);

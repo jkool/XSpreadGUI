@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import xspread.application.Experiment;
+import xspread.application.MosaicWriter;
+import xspread.application.Process;
+import xspread.application.RandomGenerator;
 import xspread.impl.Disperser_Continuous2D;
 import xspread.impl.RasterMosaic;
 import xspread.impl.output.MosaicWriter_Raster;
@@ -20,14 +27,6 @@ import xspread.impl.process.Process_Growth;
 import xspread.impl.process.Process_Infestation;
 import xspread.impl.process.Process_ManageAge;
 import xspread.impl.random.RandomGenerator_Determined;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import xspread.application.Experiment;
-import xspread.application.MosaicWriter;
-import xspread.application.Process;
-import xspread.application.RandomGenerator;
 
 public class ExperimentTest {
 

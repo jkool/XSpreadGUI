@@ -9,11 +9,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
-
 import xspread.util.ControlType;
 
 /**

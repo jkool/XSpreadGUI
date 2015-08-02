@@ -18,12 +18,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
-import xspread.util.ErrorHandler;
-import xspread.util.JavaFXUtils;
-import xspread.util.TextUtils;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -32,10 +26,16 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import xspread.util.ErrorHandler;
+import xspread.util.JavaFXUtils;
+import xspread.util.TextUtils;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 //import javafx.scene.control.TreeItem;
 //import xspread.MainGUI.Item;
@@ -188,7 +188,6 @@ public class SpreadProperties {
 		values.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 
 		values.setOnEditCommit(new EventHandler<CellEditEvent<Item, String>>() {
-			@SuppressWarnings("static-access")
 			@Override
 			public void handle(final CellEditEvent<Item, String> event) {
 
@@ -200,7 +199,7 @@ public class SpreadProperties {
 
 					if (key.equalsIgnoreCase("species")) {
 						List<String> tempList = TextUtils
-								.parseStringArray((String) event.getNewValue());
+								.parseStringArray(event.getNewValue());
 
 						List<String> adds = new ArrayList(tempList);
 						adds.removeAll(speciesList);
@@ -211,8 +210,8 @@ public class SpreadProperties {
 						TreeItem<Item> root = event.getTreeTableView()
 								.getRoot();
 
-						SpreadProperties.this.addNodes(adds, root);
-						SpreadProperties.this.removeNodes(deletes, root);
+						SpreadProperties.addNodes(adds, root);
+						SpreadProperties.removeNodes(deletes, root);
 						SpreadProperties.this.update(root);
 
 						speciesList = tempList;
@@ -229,40 +228,40 @@ public class SpreadProperties {
 
 						switch (parentName.toLowerCase()) {
 						case "presence files":
-							presenceFiles.put(key, (String) event.getNewValue());
+							presenceFiles.put(key, event.getNewValue());
 							break;
 						case "age files":
-							ageFiles.put(key, (String) event.getNewValue());
+							ageFiles.put(key, event.getNewValue());
 							break;
 						case "habitat files":
-							habitatFiles.put(key, (String) event.getNewValue());
+							habitatFiles.put(key, event.getNewValue());
 							break;
 						case "reference files":
 							referenceFiles.put(key,
-									(String) event.getNewValue());
+									event.getNewValue());
 							break;
 						case "management files":
 							referenceFiles.put(key,
-									(String) event.getNewValue());
+									event.getNewValue());
 							break;
 						case "dispersal distances":
 							distances.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "dispersal rates":
 							rates.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "direction kernels":
 							directions.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "age at stage information":
 							double[] da = TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue());
 							long[] la = new long[da.length];
 							for (int i = 0; i < da.length; i++) {
@@ -272,21 +271,21 @@ public class SpreadProperties {
 							break;
 						case "probability of detection at stage":
 							p_detection.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "ground control cost":
 							groundControlCost.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "ground control labour":
 							groundControlLabour.put(key, TextUtils
-									.parseNumericArray((String) event
+									.parseNumericArray(event
 											.getNewValue()));
 							break;
 						case "wait time before detection":
-							waitTime.put(key, Long.parseLong((String) event
+							waitTime.put(key, Long.parseLong(event
 									.getNewValue()));
 							break;
 						}
@@ -330,7 +329,7 @@ public class SpreadProperties {
 							break;
 
 						case "output directory":
-							String dirName = (String) event.getNewValue();
+							String dirName = event.getNewValue();
 							File dir = new File(dirName);
 							if (!dir.exists()) {
 								Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -934,6 +933,7 @@ public class SpreadProperties {
 				sp = sp_;
 			}
 
+			@Override
 			public void run() {
 
 				sp.presenceFiles.clear();
@@ -2037,6 +2037,7 @@ public class SpreadProperties {
 		for (TreeItem<Item> child : root.getChildren()) {
 			if (species.contains(child.getValue().getKey())) {
 				Platform.runLater(new Runnable() {
+					@Override
 					public void run() {
 						root.getChildren().remove(child);
 					}
@@ -2057,6 +2058,7 @@ public class SpreadProperties {
 			if (defaults.keySet().contains(child.getValue().getKey())) {
 				for (String sp : species) {
 					Platform.runLater(new Runnable() {
+						@Override
 						public void run() {
 							child.getChildren().add(
 									new TreeItem<Item>(new Item<>(sp, defaults

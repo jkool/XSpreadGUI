@@ -4,18 +4,17 @@
  *******************************************************************************/
 package xspread.test.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 import java.util.TreeMap;
-
-import xspread.util.Stats;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import xspread.application.Infestation;
 import xspread.application.Patch;
+import xspread.util.Stats;
 
 public class StatsTest {
 

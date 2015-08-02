@@ -225,7 +225,8 @@ public class CalibrationUI {
 			species = speciesList.getValue();
 			distanceField.clear();
 			rateField.clear();
-			Platform.runLater(new Runnable(){public void run(){getGallery();}});}
+			Platform.runLater(new Runnable(){@Override
+			public void run(){getGallery();}});}
 		});
 		}
 		else{speciesList = new ComboBox<String>(FXCollections.observableArrayList("<Empty>"));}	
@@ -317,6 +318,7 @@ public class CalibrationUI {
 			return row;
 		}
 		
+		@Override
 		public int compareTo(Tile other){
 			if(this.row<other.row){return -1;}
 			if(this.row>other.row){return 1;}

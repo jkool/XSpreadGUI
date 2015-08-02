@@ -8,10 +8,10 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 /**
  * @author John B. Matthews
@@ -20,6 +20,7 @@ public class ShowRaster extends Application {
 
 	double dragBaseX, dragBaseY, dragBase2X, dragBase2Y;
 
+	@Override
 	public void start(Stage stage) throws IOException {
 		// load the image
 		Raster raster = RasterReader
@@ -66,6 +67,7 @@ public class ShowRaster extends Application {
 	private void setImagePan(Scene scene, ImageView iv) {
 		iv.setOnMousePressed(new EventHandler<MouseEvent>() {
 
+			@Override
 			public void handle(MouseEvent event) {
 
 				scene.setCursor(Cursor.MOVE);
@@ -77,18 +79,21 @@ public class ShowRaster extends Application {
 		});
 
 		iv.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent event) {
 				iv.setTranslateX(dragBaseX + (event.getSceneX() - dragBase2X));
 				iv.setTranslateY(dragBaseY + (event.getSceneY() - dragBase2Y));
 			}
 		});
 		iv.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
 			public void handle(MouseEvent event) {
 				scene.setCursor(Cursor.DEFAULT);
 			}
 		});
 
 		iv.setOnScroll(new EventHandler<ScrollEvent>() {
+			@Override
 			public void handle(ScrollEvent event) {
 
 				double dy = event.getDeltaY();

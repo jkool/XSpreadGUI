@@ -36,7 +36,8 @@ public class Monitor extends OutputStream
         output.appendText(String.valueOf((char) i));
     }
     
-    public void close(){
+    @Override
+	public void close(){
     	System.setOut(oldOut);
     	System.setErr(oldErr);
     	stage.close();

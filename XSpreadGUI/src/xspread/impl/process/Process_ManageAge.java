@@ -6,8 +6,8 @@ package xspread.impl.process;
 
 import java.util.Iterator;
 
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
 

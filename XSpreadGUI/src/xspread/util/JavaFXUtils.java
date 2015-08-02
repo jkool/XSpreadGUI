@@ -2,12 +2,12 @@ package xspread.util;
 
 import java.nio.IntBuffer;
 
-import xspread.application.Item;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 import javafx.scene.image.WritablePixelFormat;
+import xspread.application.Item;
 
 public class JavaFXUtils {
 
@@ -39,10 +39,9 @@ public class JavaFXUtils {
 		IntBuffer src = IntBuffer.allocate(width * height);
 		WritablePixelFormat<IntBuffer> pf = PixelFormat.getIntArgbInstance();
 		image.getPixelReader().getPixels(0, 0, width, height, pf, src, width);
-		int newWidth = (int) ((double) width * zoom);
-		int newHeight = (int) ((double) height * zoom);
+		int newWidth = (int) (width * zoom);
+		int newHeight = (int) (height * zoom);
 		int[] dst = new int[newWidth * newHeight];
-		int index = 0;
 		for (int y = 0; y < height; y++) {
 			//index = y * newWidth * z;
 			//for (int x = 0; x < width; x++) {

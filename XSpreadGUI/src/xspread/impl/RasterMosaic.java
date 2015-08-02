@@ -20,14 +20,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import xspread.application.Disperser;
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
-
 import xspread.util.ControlType;
 import xspread.util.Raster;
 import xspread.util.RasterReader;
-
 import cern.jet.random.Uniform;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -413,6 +411,7 @@ public class RasterMosaic implements Mosaic, Cloneable {
 		return fill(region, species);
 	}
 
+	@Override
 	public Set<Patch> getFrozen(Set<Patch> region, String species) {
 		Set<Patch> frozen = new TreeSet<Patch>();
 		for (Patch p : region) {
@@ -2262,6 +2261,7 @@ public class RasterMosaic implements Mosaic, Cloneable {
 		}
 	}
 	
+	@Override
 	public void updateInfestationStages(Map<String, long[]> thresholds) {
 		for (String species:thresholds.keySet()) {
 			for(Patch p:patches.values()){

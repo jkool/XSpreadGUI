@@ -4,6 +4,20 @@
  *******************************************************************************/
 package xspread.application;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.concurrent.Task;
 import xspread.impl.Disperser_Continuous2D;
 import xspread.impl.RasterMosaic;
 import xspread.impl.output.ExperimentWriter_Text;
@@ -20,21 +34,6 @@ import xspread.impl.random.RandomGenerator_Exponential;
 import xspread.impl.random.RandomGenerator_Kernel;
 import xspread.impl.random.RandomGenerator_Poisson;
 import xspread.impl.random.RandomGenerator_Uniform;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
-import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.concurrent.Task;
 import xspread.postprocess.CalibrationAnalysis;
 
 /**
@@ -73,6 +72,7 @@ public class SpreadProcess extends Task {
 	 * Initializes required objects - e.g. the Mosaic, OutputWriters etc.
 	 */	
 
+	@Override
 	public Boolean call() throws IOException {
 
 		// Set up the Mosaic (currently only implemented as a raster)
@@ -113,7 +113,6 @@ public class SpreadProcess extends Task {
 
 		ExperimentWriter_Text ew = new ExperimentWriter_Text();
 		StatsWriter_Text sw = new StatsWriter_Text();
-		StatsWriter_Text sw2 = new StatsWriter_Text();
 		
 		ew.setReferenceMosaic(reference);
 
@@ -256,10 +255,10 @@ public class SpreadProcess extends Task {
 		updateMessage("Starting run...");
 		int ndistances = distances.get(spList.get(0)).length;
 		
-		sw2.setOutputFolder(outputFolder);
+		sw.setOutputFolder(outputFolder);
 		String sw2_output = sp.getTraceBaseName();
-		sw2.setOutputFile(sw2_output);
-		sw2.open(new HashSet<String>(spList));
+		sw.setOutputFile(sw2_output);
+		sw.open(new HashSet<String>(spList));
 
 		if (sp.getRunType().equalsIgnoreCase("Paired")) {
 
@@ -276,7 +275,8 @@ public class SpreadProcess extends Task {
 				pairProgress.set((double) (i + 1)
 						/ (double) ndistances);
 				
-				class PairRunnable implements Runnable{int i = 0; PairRunnable(int i){this.i=i;}public void run(){
+				class PairRunnable implements Runnable{int i = 0; PairRunnable(int i){this.i=i;}@Override
+				public void run(){
 					pairProgressText.set("Processing pair " + (i+1) + " of " + ndistances);
 				}}
 				
@@ -332,9 +332,9 @@ public class SpreadProcess extends Task {
 						//sw.setRates(rate_vec);
 						//sw.setReplicate(n);
 						
-						sw2.setDistances(dist_vec);
-						sw2.setRates(rate_vec);
-						sw2.setReplicate(n);
+						sw.setDistances(dist_vec);
+						sw.setRates(rate_vec);
+						sw.setReplicate(n);
 						
 						//String sw_output = sp.getTraceBaseName() + "_" + i
 						//		+ "_" + n;
@@ -343,7 +343,7 @@ public class SpreadProcess extends Task {
 							//sw.open(new HashSet<String>(spList));
 							//sw.setRunID(i * distances.get(spList.get(0)).length
 							//		+ n);
-							sw2.setRunID(i * distances.get(spList.get(0)).length
+							sw.setRunID(i * distances.get(spList.get(0)).length
 									+ n);
 						//} catch (IOException e1) {
 						//	System.out
@@ -354,7 +354,7 @@ public class SpreadProcess extends Task {
 						//					+ ".  Skipping.");
 						//	continue;
 						//}
-						e.setStatsWriter(sw2);
+						e.setStatsWriter(sw);
 						e.writeTraceFile(writeTrace);
 					}
 
@@ -413,7 +413,8 @@ public class SpreadProcess extends Task {
 				distProgress.set((double) (i + 1)
 						/ (double) ndistances);
 				
-				class DistRunnable implements Runnable{int i = 0; DistRunnable(int i){this.i=i;}public void run(){
+				class DistRunnable implements Runnable{int i = 0; DistRunnable(int i){this.i=i;}@Override
+				public void run(){
 					distProgressText.set("Processing distance class " + (i+1) + " of " + ndistances);
 				}}
 				
@@ -429,7 +430,8 @@ public class SpreadProcess extends Task {
 					rateProgress.set((double) (j + 1)
 							/ (double) nrates);
 					
-					class RateRunnable implements Runnable{int j = 0; RateRunnable(int j){this.j=j;}public void run(){
+					class RateRunnable implements Runnable{int j = 0; RateRunnable(int j){this.j=j;}@Override
+					public void run(){
 						rateProgressText.set("Processing rate class " + (j+1) + " of " + nrates);
 					}}
 					
@@ -494,9 +496,9 @@ public class SpreadProcess extends Task {
 						//	sw.setRates(rate_vec);
 						//	sw.setReplicate(n);
 							
-							sw2.setDistances(dist_vec);
-							sw2.setRates(rate_vec);
-							sw2.setReplicate(n);
+							sw.setDistances(dist_vec);
+							sw.setRates(rate_vec);
+							sw.setReplicate(n);
 							
 						//	String sw_output = sp.getTraceBaseName() + "_" + i
 						//			+ "_" + j + "_" + n;
@@ -508,7 +510,7 @@ public class SpreadProcess extends Task {
 						//				+ j * (rates.get(spList.get(0)).length)
 						//				+ n);
 								
-								sw2.setRunID(i
+								sw.setRunID(i
 										* distances.get(spList.get(0)).length
 										+ j * (rates.get(spList.get(0)).length)
 										+ n);
@@ -520,7 +522,7 @@ public class SpreadProcess extends Task {
 						//						+ sw_output + ".  Skipping.");
 						//		continue;
 						//	}
-							e.setStatsWriter(sw2);
+							e.setStatsWriter(sw);
 							e.writeTraceFile(writeTrace);
 						}
 
@@ -562,7 +564,7 @@ public class SpreadProcess extends Task {
 				distance_rep++;
 			}
 
-			sw2.close();
+			sw.close();
 			ew.close();
 
 			// Post-process calibration results

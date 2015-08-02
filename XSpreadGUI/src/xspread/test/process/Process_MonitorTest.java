@@ -4,7 +4,8 @@
  *******************************************************************************/
 package xspread.test.process;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,14 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import xspread.impl.RasterMosaic;
-import xspread.impl.process.Process_Monitor;
-import xspread.util.ControlType;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import xspread.application.Patch;
+import xspread.impl.RasterMosaic;
+import xspread.impl.process.Process_Monitor;
+import xspread.util.ControlType;
 
 public class Process_MonitorTest {
 

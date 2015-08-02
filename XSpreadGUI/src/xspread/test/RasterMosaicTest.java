@@ -4,11 +4,11 @@
  *******************************************************************************/
 package xspread.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,17 +17,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import xspread.impl.Disperser_Continuous2D;
-import xspread.impl.Disperser_None;
-import xspread.impl.RasterMosaic;
-import xspread.impl.random.RandomGenerator_Determined;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import xspread.application.Disperser;
 import xspread.application.Patch;
 import xspread.application.RandomGenerator;
+import xspread.impl.Disperser_Continuous2D;
+import xspread.impl.Disperser_None;
+import xspread.impl.RasterMosaic;
+import xspread.impl.random.RandomGenerator_Determined;
 
 import com.vividsolutions.jts.geom.Coordinate;
 

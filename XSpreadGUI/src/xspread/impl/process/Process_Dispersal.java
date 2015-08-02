@@ -11,12 +11,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import xspread.util.ControlType;
-
-import xspread.application.Mosaic;
 import xspread.application.Infestation;
+import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
+import xspread.util.ControlType;
 
 /**
  * Performs operations on a Mosaic pertaining to dispersing propagules. Chiefly,

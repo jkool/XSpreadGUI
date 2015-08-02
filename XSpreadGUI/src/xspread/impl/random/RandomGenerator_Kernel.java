@@ -7,7 +7,6 @@ package xspread.impl.random;
 import java.util.Arrays;
 
 import xspread.application.RandomGenerator;
-
 import cern.jet.random.Empirical;
 import cern.jet.random.engine.RandomEngine;
 

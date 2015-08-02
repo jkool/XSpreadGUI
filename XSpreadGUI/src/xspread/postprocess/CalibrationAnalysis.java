@@ -16,8 +16,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 import javafx.application.Platform;

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.swing.JOptionPane;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -31,13 +29,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import javax.swing.JOptionPane;
+
 import xspread.application.SpreadProcess;
 import xspread.application.SpreadProperties;
 import xspread.postprocess.CalibrationAnalysis;
+import xspread.util.CalibrationUI;
 import xspread.util.ChartViewer;
 import xspread.util.ErrorHandler;
 import xspread.util.ImageGallery;
-import xspread.util.CalibrationUI;
 import xspread.views.RootLayoutController;
 
 public class MainGUI extends Application {
@@ -176,6 +177,7 @@ public class MainGUI extends Application {
 		SpreadProcess sproc = new SpreadProcess(sp);
 		
 		secondaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+			@Override
 			public void handle(WindowEvent event) {
 				sproc.cancel(true);
 				System.out.println("Cancelled.");

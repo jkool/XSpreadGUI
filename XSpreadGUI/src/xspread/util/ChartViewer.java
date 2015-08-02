@@ -37,11 +37,11 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import xspread.MainGUI;
 import xspread.application.SpreadProperties;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class ChartViewer {
 
@@ -145,6 +145,7 @@ public class ChartViewer {
 		});
 	}
 	
+	@SuppressWarnings("unused")
 	public boolean updateSeries(){
 		lineChart.getData().clear();
 		
@@ -161,13 +162,10 @@ public class ChartViewer {
 			xdata = csv.getColumn(fieldLookup.get(xField));
 			ydata = csv.getColumn(fieldLookup.get(yField));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -262,6 +260,7 @@ public class ChartViewer {
 				if (!species.equals(speciesList.getValue())) {
 					species = speciesList.getValue();
 					Platform.runLater(new Runnable() {
+						@Override
 						public void run() {
 							updateSeries();
 						}

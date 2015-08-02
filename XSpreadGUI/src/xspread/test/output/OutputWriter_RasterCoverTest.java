@@ -10,13 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import xspread.impl.RasterMosaic;
 import xspread.impl.output.MosaicWriter_Raster;
 import xspread.util.Raster;
 import xspread.util.RasterReader;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class OutputWriter_RasterCoverTest {
 

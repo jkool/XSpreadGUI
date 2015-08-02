@@ -14,13 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import xspread.impl.RasterMosaic;
-import xspread.impl.process.Process_Growth;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import xspread.application.Patch;
+import xspread.impl.RasterMosaic;
+import xspread.impl.process.Process_Growth;
 
 public class Process_GrowthTest {
 

@@ -17,8 +17,8 @@ import xspread.application.Experiment;
 import xspread.application.Mosaic;
 import xspread.application.Process;
 import xspread.application.StatsWriter;
-import xspread.util.ControlType;
 import xspread.impl.process.Process_Costing;
+import xspread.util.ControlType;
 
 /**
  * Used to write Experiment-level output to output files, including number of

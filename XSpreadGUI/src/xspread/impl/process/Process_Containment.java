@@ -11,7 +11,6 @@ import java.util.TreeSet;
 import xspread.application.Mosaic;
 import xspread.application.Patch;
 import xspread.application.Process;
-
 import xspread.util.ControlType;
 
 /**
