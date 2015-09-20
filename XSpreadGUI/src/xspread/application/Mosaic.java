@@ -115,6 +115,10 @@ public interface Mosaic {
 	 */
 
 	public Map<Integer, Patch> getControlled(String species, ControlType control);
+	
+	public Map<String, Map<ControlType,Integer>> getControlTable();
+	
+	public void updateControlTable();
 
 	/**
 	 * @param patch

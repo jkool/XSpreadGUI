@@ -45,8 +45,8 @@ public class CalibrationAnalysis {
 	private double performanceCriterion = .5d;
 	private String outputFile = "calibration.csv";
 	private List<String> speciesList;
-	private Map<String, Map<Double, Map<Double, Integer>>> calVals = new TreeMap<String, Map<Double, Map<Double, Integer>>>();
-	private Map<String, Map<Double, Map<Double, Integer>>> selected = new TreeMap<String, Map<Double, Map<Double, Integer>>>();
+	private Map<String, Map<Double, Map<Double, Number[]>>> calVals = new TreeMap<String, Map<Double, Map<Double, Number[]>>>();
+	private Map<String, Map<Double, Map<Double, Number[]>>> selected = new TreeMap<String, Map<Double, Map<Double, Number[]>>>();
 
 	public static void main(String[] args) {
 		CalibrationAnalysis ca = new CalibrationAnalysis();
@@ -115,13 +115,13 @@ public class CalibrationAnalysis {
 				// just iterate over the table and use Maps to do the grouping.
 
 				String sql = "SELECT " + spreadRateField + ","
-						+ spreadDistanceField + "," + errorType + " FROM "
+						+ spreadDistanceField + "," + criterionField + ", " + errorType + " FROM "
 						+ trimtable + " ORDER BY " + criterionField
 						+ " DESC LIMIT " + trimrows;
 
 				ResultSet resampleSet = stmt.executeQuery(sql);
 
-				Map<Double, Map<Double, Integer>> map = process(resampleSet,
+				Map<Double, Map<Double, Number[]>> map = process(resampleSet,
 						species, repct);
 
 				writeToFile(map, outputFolder + "/" + species + "_"
@@ -155,10 +155,10 @@ public class CalibrationAnalysis {
 	 * @throws SQLException
 	 */
 
-	private Map<Double, Map<Double, Integer>> process(ResultSet resampleSet,
+	private Map<Double, Map<Double, Number[]>> process(ResultSet resampleSet,
 			String species, int repct) throws SQLException {
 
-		Map<Double, Map<Double, Integer>> map = new TreeMap<Double, Map<Double, Integer>>();
+		Map<Double, Map<Double, Number[]>> map = new TreeMap<Double, Map<Double, Number[]>>();
 
 		while (resampleSet.next()) {
 
@@ -169,17 +169,24 @@ public class CalibrationAnalysis {
 
 			double spread = resampleSet.getDouble(spreadRateField);
 			double distance = resampleSet.getDouble(spreadDistanceField);
+			double value = resampleSet.getDouble(criterionField);
 
 			if (!map.containsKey(spread)) {
-				Map<Double, Integer> insert = new TreeMap<Double, Integer>();
-				insert.put(distance, 1);
+				Map<Double, Number[]> insert = new TreeMap<Double, Number[]>();
+				insert.put(distance, new Number[]{1,value});
 				map.put(spread, insert);
 			} else {
-				Map<Double, Integer> retrieve = map.get(spread);
+				Map<Double, Number[]> retrieve = map.get(spread);
 				if (!retrieve.containsKey(distance)) {
-					retrieve.put(distance, 1);
+					retrieve.put(distance, new Number[]{1,value});
 				} else {
-					retrieve.put(distance, retrieve.get(distance) + 1);
+					Number[] na = retrieve.get(distance);
+					na[0] = na[0].intValue()+1;
+					double oa = na[1].doubleValue();
+					double nv = value;
+					double oc = na[0].doubleValue()-1;
+					double nc = oc+1;
+					na[1] = oa*(oc/nc)+nv/nc;
 				}
 			}
 		}
@@ -198,11 +205,11 @@ public class CalibrationAnalysis {
 
 			// Then iterate over the pair values
 
-			Map<Double, Integer> submap = map.get(dbl);
+			Map<Double, Number[]> submap = map.get(dbl);
 			Iterator<Double> it2 = submap.keySet().iterator();
 			while (it2.hasNext()) {
 				Double val = it2.next();
-				if (submap.get(val) < requiredReplicates) {
+				if (submap.get(val)[0].intValue() < requiredReplicates) {
 					it2.remove();
 				}
 			}
@@ -232,7 +239,7 @@ public class CalibrationAnalysis {
 	 *            written
 	 */
 
-	private void writeToFile(Map<Double, Map<Double, Integer>> map,
+	private void writeToFile(Map<Double, Map<Double, Number[]>> map,
 			String outputFile, String species) {
 
 		if (map.size() == 0) {
@@ -256,12 +263,12 @@ public class CalibrationAnalysis {
 			Iterator<Double> it1 = map.keySet().iterator();
 			while (it1.hasNext()) {
 				double spreadRate = it1.next();
-				Map<Double, Integer> retrieve = map.get(spreadRate);
+				Map<Double, Number[]> retrieve = map.get(spreadRate);
 				Iterator<Double> it2 = retrieve.keySet().iterator();
 				while (it2.hasNext()) {
 					double spreadDistance = it2.next();
 					bw.write(spreadRate + "," + spreadDistance + ","
-							+ retrieve.get(spreadDistance) + "\n");
+							+ retrieve.get(spreadDistance)[0] + "," + retrieve.get(spreadDistance)[1] + "\n");
 				}
 			}
 		} catch (IOException e) {
@@ -391,27 +398,28 @@ public class CalibrationAnalysis {
 		return filename.substring(0, extensionIndex);
 	}
 
-	public Map<String, Map<Double, Map<Double, Integer>>> getSelected() {
+	public Map<String, Map<Double, Map<Double, Number[]>>> getSelected() {
 		return selected;
 	}
 
-	public Map<String, Map<Double, Map<Double, Integer>>> getCalVals() {
+	public Map<String, Map<Double, Map<Double, Number[]>>> getCalVals() {
 		return calVals;
 	}
 
-	private Map<Double, Map<Double, Integer>> deepCopy(
-			Map<Double, Map<Double, Integer>> original) {
-		Map<Double, Map<Double, Integer>> copy = new TreeMap<Double, Map<Double, Integer>>();
+	private Map<Double, Map<Double, Number[]>> deepCopy(
+			Map<Double, Map<Double, Number[]>> original) {
+		Map<Double, Map<Double, Number[]>> copy = new TreeMap<Double, Map<Double, Number[]>>();
 		Iterator<Double> oi = original.keySet().iterator();
 		while (oi.hasNext()) {
-			Map<Double, Integer> distmap_copy = new TreeMap<Double, Integer>();
+			Map<Double, Number[]> distmap_copy = new TreeMap<Double, Number[]>();
 			double rate = oi.next();
-			Map<Double, Integer> distmap = original.get(rate);
+			Map<Double, Number[]> distmap = original.get(rate);
 			Iterator<Double> dmi = distmap.keySet().iterator();
 			while (dmi.hasNext()) {
 				double dist = dmi.next();
-				int val = distmap.get(dist);
-				distmap_copy.put(dist, val);
+				int val = distmap.get(dist)[0].intValue();
+				double avg = distmap.get(dist)[1].doubleValue();
+				distmap_copy.put(dist, new Number[]{val,avg});
 			}
 			copy.put(rate, distmap_copy);
 		}

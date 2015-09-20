@@ -210,7 +210,8 @@ public class MainGUI extends Application {
 				pb.setProgress(0);
 				secondaryStage.close();
 				calref = sproc.getCalibration();
-				Platform.runLater(new DispThread());
+				new Thread(new DispThread()).start();
+				//Platform.runLater(new DispThread());
 			});
 
 			sproc.setOnFailed(event -> {
@@ -414,24 +415,29 @@ public class MainGUI extends Application {
 				cui.setSpreadPropertiesReference(sp);
 				cui.setCalVals(calref.getCalVals());
 				cui.setSelVals(calref.getSelected());
-				cui.getGallery();
-				tp.getTabs().add(cuiTab);
+				cui.getGallery(true);
+				//tp.getTabs().add(cuiTab);
+				Platform.runLater(()->{tp.getTabs().add(cuiTab);});
 			}
 
 			igTab = new Tab("Image Gallery");
 			ImageGallery ig = new ImageGallery();
 			ig.setParentGUI(MainGUI.this);
 			ig.setSpreadPropertiesReference(sp);
+			//ig.getGallery();
 			ig.getGallery();
-			tp.getTabs().add(igTab);
+			//tp.getTabs().add(igTab);
+			Platform.runLater(()->{tp.getTabs().add(igTab);});
 
 			if(sp.isWritingTrace()){
 			chartTab = new Tab("Plots");
 			ChartViewer cv = new ChartViewer();
 			cv.setParentGUI(MainGUI.this);
 			cv.setSpreadPropertiesReference(sp);
-			cv.getGallery();
-			tp.getTabs().add(chartTab);
+			//cv.getGallery();
+			Platform.runLater(()->{cv.getGallery();});
+			//tp.getTabs().add(chartTab);
+			Platform.runLater(()->{tp.getTabs().add(chartTab);});
 
 			resultsVisible = true;
 			}	

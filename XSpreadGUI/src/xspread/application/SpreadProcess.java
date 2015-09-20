@@ -394,6 +394,8 @@ public class SpreadProcess extends Task {
 				updateProgress((i + 1), distances.get(spList.get(0)).length);
 				pair_set++;
 			}
+			sw.close();
+			ew.close();
 		}
 
 		// Otherwise, we perform a calibration-type run where permutations of

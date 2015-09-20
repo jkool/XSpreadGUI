@@ -273,25 +273,25 @@ public class Raster {
 
 	public ImageView discreteImageView_byWidth(int width) {
 		double scale = (double) width/getCols();
-		int height = (int) scale * getRows();	
+		int height = (int) (scale * getRows());	
 		return discreteImageView(width,height);
 	}
 	
 	public ImageView continuousImageView_byWidth(int width) {
 		double scale = (double) width/getCols();
-		int height = (int) scale * getRows();	
+		int height = (int) (scale * getRows());	
 		return continuousImageView(width,height);
 	}
 	
 	public ImageView discreteImageView_byHeight(int height) {
 		double scale = (double) height/getRows();
-		int width = (int) scale * getCols();	
+		int width = (int) (scale * getCols());	
 		return discreteImageView(width,height);
 	}
 	
 	public ImageView continuousImageView_byHeight(int height) {
 		double scale = (double) height/getRows();
-		int width = (int) scale * getCols();	
+		int width = (int) (scale * getCols());	
 		return continuousImageView(width,height);
 	}
 

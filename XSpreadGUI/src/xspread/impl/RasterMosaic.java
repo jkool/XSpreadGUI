@@ -46,6 +46,7 @@ public class RasterMosaic implements Mosaic, Cloneable {
 	private Raster managementMap;
 	private List<String> speciesList = new ArrayList<String>();
 	private Map<String, Disperser> dispersers = new TreeMap<String, Disperser>();
+	private Map<String, Map<ControlType,Integer>> controlTable = new TreeMap<String,Map<ControlType,Integer>>();
 	private Long NO_PRESENCE = 0l;
 	private Long NULL_HABITAT = 0l;
 	private Long NO_MANAGEMENT = 0l;
@@ -69,6 +70,25 @@ public class RasterMosaic implements Mosaic, Cloneable {
 		speciesList.add(species);
 	}
 
+	public void updateControlTable(){
+		controlTable.clear();
+		for(String species:speciesList){
+			controlTable.put(species, new TreeMap<ControlType,Integer>());
+			Map<ControlType,Integer> a = controlTable.get(species);
+			a.put(ControlType.GROUND_CONTROL, 0);
+			a.put(ControlType.CONTAINMENT, 0);
+			a.put(ControlType.CONTAINMENT_CORE, 0);
+		for(Patch p:patches.values()){
+			if(p.getControls().contains(ControlType.GROUND_CONTROL)){a.put(ControlType.GROUND_CONTROL,a.get(ControlType.GROUND_CONTROL)+1);}
+			if(p.getControls().contains(ControlType.CONTAINMENT)){a.put(ControlType.CONTAINMENT,a.get(ControlType.CONTAINMENT)+1);}
+			if(p.getControls().contains(ControlType.CONTAINMENT_CORE)){a.put(ControlType.CONTAINMENT_CORE,a.get(ControlType.CONTAINMENT_CORE)+1);}
+		}}
+	}
+	
+	public Map<String, Map<ControlType,Integer>> getControlTable(){
+		return controlTable;
+	}
+	
 	/**
 	 * Used to construct the cells
 	 */

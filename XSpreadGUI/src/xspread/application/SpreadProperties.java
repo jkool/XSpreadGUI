@@ -131,7 +131,7 @@ public class SpreadProperties {
 		defaults.put("probability of detection at stage", "[0.0, 0.0, 0.0]");
 		defaults.put("ground control cost", "[0.0, 0.0, 0.0]");
 		defaults.put("ground control labour", "[0.0, 0.0, 0.0]");
-		defaults.put("wait time before detection", "1");
+		defaults.put("wait time before spread", "1");
 		defaults.put("criterion field", "K_standard");
 		defaults.put("error type", "Quantity_disagreement");
 		defaults.put("percentile threshold", "0.1");
@@ -152,7 +152,7 @@ public class SpreadProperties {
 		fieldLookup.put("p_detection", "probability of detection at stage");
 		fieldLookup.put("groundControlCost", "ground control cost");
 		fieldLookup.put("groundControlLabour", "ground control labour");
-		fieldLookup.put("waitTime", "wait time before detection");
+		fieldLookup.put("waitTime", "wait time before spread");
 		fieldLookup.put("criterionField", "criterion field");
 		fieldLookup.put("errorType", "calibration error measurement type");
 		fieldLookup.put("percentile", "percentile threshold");
@@ -284,7 +284,7 @@ public class SpreadProperties {
 									.parseNumericArray(event
 											.getNewValue()));
 							break;
-						case "wait time before detection":
+						case "wait time before spread":
 							waitTime.put(key, Long.parseLong(event
 									.getNewValue()));
 							break;
@@ -460,6 +460,12 @@ public class SpreadProperties {
 
 						case "containment species ignored":
 							containmentIgnore = TextUtils
+									.parseStringArray(event.getNewValue());
+							item.setValue(event.getNewValue());
+							break;
+							
+						case "ground control species ignored":
+							groundControlIgnore = TextUtils
 									.parseStringArray(event.getNewValue());
 							item.setValue(event.getNewValue());
 							break;
@@ -661,6 +667,9 @@ public class SpreadProperties {
 		TreeItem<Item> containmentIgnoreItem = new TreeItem<Item>(new Item<>(
 				"containment species ignored",
 				TextUtils.list2ArrayString(containmentIgnore)));
+		TreeItem<Item> groundControlIgnoreItem = new TreeItem<Item>(new Item<>(
+				"ground control species ignored",
+				TextUtils.list2ArrayString(groundControlIgnore)));
 		TreeItem<Item> groundControlCostItem = new TreeItem<Item>(new Item<>(
 				"ground control cost", ""));
 
@@ -680,7 +689,7 @@ public class SpreadProperties {
 		}
 
 		TreeItem<Item> waitTimeItem = new TreeItem<Item>(new Item<>(
-				"wait time before detection", ""));
+				"wait time before spread", ""));
 
 		for (String s : speciesList) {
 			waitTimeItem.getChildren().add(
@@ -739,7 +748,7 @@ public class SpreadProperties {
 		labourItem.getChildren().setAll(containmentLabourItem,
 				groundControlLabourItem);
 		costingsItem.getChildren().setAll(costsItem, labourItem);
-		ignoreItem.getChildren().setAll(containmentIgnoreItem);
+		ignoreItem.getChildren().setAll(groundControlIgnoreItem,containmentIgnoreItem);
 		managementItem.getChildren().setAll(containmentCutoffItem,
 				coreBufferSizeItem, p_detectionItem, costingsItem, ignoreItem,
 				waitTimeItem);
@@ -1159,7 +1168,7 @@ public class SpreadProperties {
 				sp.waitTime.clear();
 
 				TreeItem<Item> waitTimeNode = JavaFXUtils.findNode(
-						"wait time before detection", root);
+						"wait time before spread", root);
 				for (String species : sp.speciesList) {
 					TreeItem<Item> node = JavaFXUtils.findNode(species,
 							waitTimeNode);

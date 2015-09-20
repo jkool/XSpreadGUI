@@ -313,7 +313,7 @@ public class ChartViewer {
 						+ "(" + fieldLookup.get(yField) + ")";
 
 				String query2 = "SELECT " + fieldLookup.get(xField) + "," + function_op
-						+ " FROM " + csvTable + "_Copy GROUP BY " + fieldLookup.get(xField);
+						+ " FROM " + csvTable + " GROUP BY " + fieldLookup.get(xField);
 
 				ResultSet qset = stmt.executeQuery(query2);
 

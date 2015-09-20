@@ -127,10 +127,20 @@ public class StatsWriter_Text implements StatsWriter {
 			sb.append(mosaic.getNumberInfestations(species) + ",");
 			sb.append(mosaic.getNumberInfestedPatches() + ",");
 			sb.append(mosaic.getNumberUndetected(species) + ",");
-			sb.append(mosaic.getControlled(species, ControlType.GROUND_CONTROL).size() + ",");
-			sb.append(mosaic.getControlled(ControlType.CONTAINMENT).size() + ",");
-			sb.append(mosaic.getControlled(ControlType.CONTAINMENT_CORE).size()+",");
-			sb.append((mosaic.getControlled(ControlType.CONTAINMENT).size()+mosaic.getControlled(ControlType.CONTAINMENT_CORE).size()) + ",");
+			mosaic.updateControlTable();
+			
+			int gc = mosaic.getControlTable().get(species).get(ControlType.GROUND_CONTROL);
+			int cont = mosaic.getControlTable().get(species).get(ControlType.CONTAINMENT);
+			int core = mosaic.getControlTable().get(species).get(ControlType.CONTAINMENT_CORE);
+			
+			//int gc = mosaic.getControlled(species, ControlType.GROUND_CONTROL).size();
+			//int cont = mosaic.getControlled(species, ControlType.CONTAINMENT).size();
+			//int core = mosaic.getControlled(ControlType.CONTAINMENT_CORE).size();
+			
+			sb.append(gc + ",");
+			sb.append(cont + ",");
+			sb.append(core+",");
+			sb.append((cont+core) + ",");
 			sb.append(mosaic.getNumberNoData() + ",");
 			
 			sb.append(pcst.getCost(mosaic) + ",");
