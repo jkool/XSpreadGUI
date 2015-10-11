@@ -69,6 +69,20 @@ public class Patch implements Cloneable, Comparable<Patch> {
 		return max;
 	}
 	
+	public ControlType getMaxControl(String species){
+		ControlType max = ControlType.NONE;
+		for(ControlType control:controls){
+			max=ControlType.values()[Math.max(max.ordinal(), control.ordinal())];
+		}
+		if(!infestations.containsKey(species)){
+			return max;
+		}
+		for(ControlType control:infestations.get(species).getControls().keySet()){
+			max=ControlType.values()[Math.max(max.ordinal(), control.ordinal())];
+		}
+		return max;
+	}
+	
 	public boolean hasControl(ControlType control){
 		return controls.contains(control);
 	}

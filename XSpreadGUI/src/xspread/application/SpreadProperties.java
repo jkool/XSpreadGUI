@@ -241,7 +241,7 @@ public class SpreadProperties {
 									event.getNewValue());
 							break;
 						case "management files":
-							referenceFiles.put(key,
+							managementFiles.put(key,
 									event.getNewValue());
 							break;
 						case "dispersal distances":
@@ -396,6 +396,10 @@ public class SpreadProperties {
 
 						case "write output for each time step":
 							validateBoolean(event, "writeEachTimeStep");
+							break;
+							
+						case "write output for each management step":
+							validateBoolean(event, "writeEachMgtStep");
 							break;
 
 						case "add header data to raster files":
@@ -714,6 +718,9 @@ public class SpreadProperties {
 		TreeItem<Item> writeEachTimeStepItem = new TreeItem<Item>(new Item<>(
 				"write output for each time step", new Boolean(
 						writeEachTimeStep).toString()));
+		TreeItem<Item> writeEachManagementStepItem = new TreeItem<Item>(new Item<>(
+				"write output for each management step", new Boolean(
+						writeEachMgtStep).toString()));
 		TreeItem<Item> writeTraceFilesItem = new TreeItem<Item>(new Item<>(
 				"write trace files", new Boolean(writeTrace).toString()));
 		TreeItem<Item> writeRasterHeaderItem = new TreeItem<Item>(new Item<>(
@@ -739,7 +746,8 @@ public class SpreadProperties {
 		outputItem.getChildren().setAll(overwriteOutputItem, outputPathItem,
 				outputFileItem, savePropertiesToFileItem, writeCoverMapItem,
 				writeFrequencyMapItem, writeStageMapItem, writeManagementMapItem,
-				writeTraceFilesItem, writeRasterHeaderItem,writeEachTimeStepItem);
+				writeTraceFilesItem, writeRasterHeaderItem,writeEachTimeStepItem,
+				writeEachManagementStepItem);
 		runPrmsItem.getChildren().setAll(replicatesItem, startTimeItem,
 				endTimeItem, stepIntervalItem, distancesItem, ratesItem,
 				directionsItem, age_stageItem);
@@ -1600,8 +1608,8 @@ public class SpreadProperties {
 					.parseBoolean(properties
 							.getProperty("Write_Each_Time_Step")) : false;
 
-			writeEachMgtStep = properties.containsKey("Write_Each_Mgt_Step") ? Boolean
-					.parseBoolean(properties.getProperty("Write_Each_Mgt_Step"))
+			writeEachMgtStep = properties.containsKey("Write_Each_Management_Step") ? Boolean
+					.parseBoolean(properties.getProperty("Write_Each_Management_Step"))
 					: false;
 
 			writeTrace = Boolean.parseBoolean(properties.getProperty(
@@ -1796,18 +1804,18 @@ public class SpreadProperties {
 			fw.write(TextUtils.padRight("Species", 22)
 					+ TextUtils.list2ArrayString(speciesList) + "\n");
 			fw.write(TextUtils.padRight("Presence_File", 22)
-					+ TextUtils.list2ArrayString(shear(presenceFiles)) + "\n");
+					+ TextUtils.list2ArrayString(shear(presenceFiles)).replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Age_File", 22)
-					+ TextUtils.list2ArrayString(shear(ageFiles)) + "\n");
+					+ TextUtils.list2ArrayString(shear(ageFiles)).replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Habitat_File", 22)
-					+ TextUtils.list2ArrayString(shear(habitatFiles)) + "\n");
+					+ TextUtils.list2ArrayString(shear(habitatFiles)).replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Reference_File", 22)
-					+ TextUtils.list2ArrayString(shear(referenceFiles)) + "\n");
+					+ TextUtils.list2ArrayString(shear(referenceFiles)).replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Management_File", 22)
-					+ TextUtils.list2ArrayString(shear(managementFiles)) + "\n");
+					+ TextUtils.list2ArrayString(shear(managementFiles)).replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Output_Folder", 22) + outputFolder
 					+ "\n");
-			fw.write(TextUtils.padRight("Output_File", 22) + outputFile + "\n");
+			fw.write(TextUtils.padRight("Output_File", 22) + outputFile.replace("\\", "\\\\") + "\n");
 			fw.write(TextUtils.padRight("Replicates", 22) + replicates + "\n");
 			fw.write(TextUtils.padRight("Start_Time", 22) + startTime + "\n");
 			fw.write(TextUtils.padRight("End_Time", 22) + endTime + "\n");
@@ -1857,6 +1865,8 @@ public class SpreadProperties {
 			fw.write(TextUtils.padRight("Write_Stage_Maps", 22)
 					+ writeStageMaps + "\n");
 			fw.write(TextUtils.padRight("Write_Each_Time_Step", 22)
+					+ writeEachTimeStep + "\n");
+			fw.write(TextUtils.padRight("Write_Each_Management_Step", 22)
 					+ writeEachTimeStep + "\n");
 			fw.write(TextUtils.padRight("Write_Trace_Files", 22)
 					+ writeTrace + "\n");

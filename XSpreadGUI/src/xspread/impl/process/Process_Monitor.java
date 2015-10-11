@@ -74,7 +74,7 @@ public class Process_Monitor implements Process, Cloneable {
 
 		return clone;
 	}
-	
+
 	/**
 	 * Processes all patches in the Mosaic
 	 */
@@ -107,49 +107,53 @@ public class Process_Monitor implements Process, Cloneable {
 		}
 
 		visited.clear();
-		
+
 		dissolveContainment();
 	}
-	
+
 	/**
 	 * Performs dissolve operations on Patches undergoing containment
 	 */
-	
-	private void dissolveContainment(){
-		
+
+	private void dissolveContainment() {
+
 		dissolveVisited = new TreeSet<Patch>();
 
 		for (Integer key : ms.getPatches().keySet()) {
-		
+
 			Patch patch = ms.getPatch(key);
-			
-			if (patch.hasNoData()||dissolveVisited.contains(patch)||!(patch.hasControl(ControlType.CONTAINMENT)||patch.hasControl(ControlType.CONTAINMENT_CORE))) {
+
+			if (patch.hasNoData()
+					|| dissolveVisited.contains(patch)
+					|| !(patch.hasControl(ControlType.CONTAINMENT) || patch
+							.hasControl(ControlType.CONTAINMENT_CORE))) {
 				continue;
 			}
-			
+
 			Set<Patch> containmentZone = ms.getWeakContainment(patch);
-		
-		// Get the core and assign as Core area and remove Containment label
-		// to keep management options exclusive.
 
-		Set<Patch> core = ms.getStrongContainmentCore(containmentZone, coreBufferSize);
-		ms.setControl(core, ControlType.CONTAINMENT_CORE);
-		ms.removeControl(core, ControlType.CONTAINMENT);
+			// Get the core and assign as Core area and remove Containment label
+			// to keep management options exclusive.
 
-		Iterator<String> it = ms.getSpeciesList().iterator();
+			Set<Patch> core = ms.getStrongContainmentCore(containmentZone,
+					coreBufferSize);
+			ms.setControl(core, ControlType.CONTAINMENT_CORE);
+			ms.removeControl(core, ControlType.CONTAINMENT);
 
-		// Apply species-specific core control if needed.
+			Iterator<String> it = ms.getSpeciesList().iterator();
 
-		while (it.hasNext()) {
-			String sp = it.next();
+			// Apply species-specific core control if needed.
 
-			if (coreControl.contains(sp)) {
-				setControlled(core, sp,
-						ControlType.CONTAINMENT_CORE_CONTROL);
+			while (it.hasNext()) {
+				String sp = it.next();
+
+				if (coreControl.contains(sp)) {
+					setControlled(core, sp,
+							ControlType.CONTAINMENT_CORE_CONTROL);
+				}
 			}
-		}
 
-		dissolveVisited.addAll(containmentZone);
+			dissolveVisited.addAll(containmentZone);
 		}
 	}
 
@@ -172,8 +176,9 @@ public class Process_Monitor implements Process, Cloneable {
 		while (it.hasNext()) {
 
 			String species = it.next();
-			
-			if(groundControlIgnore.contains(species)&&containmentIgnore.contains(species)){
+
+			if (groundControlIgnore.contains(species)
+					&& containmentIgnore.contains(species)) {
 				if (!visited.containsKey(species)) {
 					HashSet<Patch> hs = new HashSet<Patch>();
 					hs.add(patch);
@@ -193,8 +198,9 @@ public class Process_Monitor implements Process, Cloneable {
 
 			Infestation o = patch.getInfestation(species);
 
-			// If the patch is not infested, but is under ground control, then remove ground control
-			
+			// If the patch is not infested, but is under ground control, then
+			// remove ground control
+
 			if (!o.isInfested() && o.hasControl(ControlType.GROUND_CONTROL)) {
 				o.removeControl(ControlType.GROUND_CONTROL);
 			}
@@ -272,23 +278,23 @@ public class Process_Monitor implements Process, Cloneable {
 
 		// If the species is subject to containment, then add contained list to
 		// the list of already managed cells
-		
+
 		if (!containmentIgnore.contains(species)) {
-			controlled
-					.addAll(getControlled(filled, ControlType.CONTAINMENT));
+			controlled.addAll(getControlled(filled, ControlType.CONTAINMENT));
 			controlled.addAll(getControlled(filled,
 					ControlType.CONTAINMENT_CORE));
 		}
 
 		// Remove pre-frozen ground-controlled cells from changeable Patches.
-		
-		Set<Patch> frozen = ms.getFrozen(comanaged,species);
+
+		Set<Patch> frozen = ms.getFrozen(comanaged, species);
 		controlled.addAll(frozen);
-		
+
 		// If the total area is less than the containment cutoff size, put cells
 		// into ground control
 
-		if (containmentIgnore.contains(species) || comanaged.size() - controlled.size() <= containmentCutoff) {
+		if (containmentIgnore.contains(species)
+				|| comanaged.size() - controlled.size() <= containmentCutoff) {
 
 			// If the species is exempt from ground control actions, then break.
 
@@ -313,7 +319,7 @@ public class Process_Monitor implements Process, Cloneable {
 		// Otherwise assign all cells in the bounded area to containment
 
 		else {
-			
+
 			filled.removeAll(controlled);
 			ms.setMonitored(filled, true);
 
@@ -323,7 +329,7 @@ public class Process_Monitor implements Process, Cloneable {
 			ms.removeControl(filled, ControlType.GROUND_CONTROL, species);
 
 			// Only assign the new cells to containment, not existing ones.
-			
+
 			ms.setControl(filled, ControlType.CONTAINMENT);
 		}
 	}

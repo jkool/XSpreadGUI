@@ -183,7 +183,6 @@ public class Experiment implements Cloneable {
 
 		for (long t = startTime; t < endTime; t += timeIncrement) {
 			time = t;
-			///////////////////////////////////////////////////////////////////////
 			step();
 		}
 

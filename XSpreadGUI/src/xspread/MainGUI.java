@@ -211,7 +211,6 @@ public class MainGUI extends Application {
 				secondaryStage.close();
 				calref = sproc.getCalibration();
 				new Thread(new DispThread()).start();
-				//Platform.runLater(new DispThread());
 			});
 
 			sproc.setOnFailed(event -> {
@@ -265,7 +264,7 @@ public class MainGUI extends Application {
 				pb.setProgress(0);
 				secondaryStage.close();
 				calref = sproc.getCalibration();
-				Platform.runLater(new DispThread());
+				new Thread(new DispThread()).start();
 			});
 
 			sproc.setOnFailed(event -> {

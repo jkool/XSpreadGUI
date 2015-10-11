@@ -63,7 +63,8 @@ public class ImageGallery {
 	private ProgressIndicator pi;
 
 	public ImageGallery() {
-		rasterTypeComboBox.getItems().addAll("ALL", "Cover", "Frequency", "Monitored", "Stage");
+		rasterTypeComboBox.getItems().addAll("ALL", "Cover", "Frequency",
+				"Monitored", "Stage");
 
 		rasterTypeComboBox.setValue("ALL");
 
@@ -78,61 +79,62 @@ public class ImageGallery {
 	}
 
 	public void getGallery() {
-		
+
 		boolean first = true;
-		
-		Platform.runLater(()->{
-		secondaryStage = new Stage();
-		killProcess=false;
-		secondaryStage.getIcons().add(
-				new Image(MainGUI.class
-						.getResourceAsStream("/xspread/resources/CDU_32.png")));
-		secondaryStage.setResizable(false);
-		secondaryStage.setTitle("Processing...");
-		secondaryStage.setAlwaysOnTop(true);
-		Group secondRoot = new Group();
-		Scene scene = new Scene(secondRoot, 380, 110, Color.WHITE);
-		GridPane mainPane = new GridPane();
-		secondRoot.getChildren().add(mainPane);
-		secondaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
-			@Override
-			public void handle(WindowEvent event) {
-				killProcess = true;
-				System.out.println("Cancelled.");
-				secondaryStage.close();
-			}
-		});
-		
-		pi = new ProgressIndicator();
-		pi.setMinWidth(140);
-		pi.setProgress(-1);
-		HBox hb = new HBox();
-		final Label plabel = new Label("Building images... Please wait.");
-		hb.getChildren().add(plabel);
-		hb.getChildren().add(pi);
-		hb.setAlignment(Pos.CENTER);
-		hb.setPadding(new Insets(20,20,20,20));
-		mainPane.setAlignment(Pos.CENTER);
-		mainPane.add(hb, 0, 0);
 
-		
-		final Button cancelButton = new Button("Cancel");
-		mainPane.add(cancelButton, 3, 1);
+		Platform.runLater(() -> {
+			secondaryStage = new Stage();
+			killProcess = false;
+			secondaryStage
+					.getIcons()
+					.add(new Image(
+							MainGUI.class
+									.getResourceAsStream("/xspread/resources/CDU_32.png")));
+			secondaryStage.setResizable(false);
+			secondaryStage.setTitle("Processing...");
+			secondaryStage.setAlwaysOnTop(true);
+			Group secondRoot = new Group();
+			Scene scene = new Scene(secondRoot, 380, 110, Color.WHITE);
+			GridPane mainPane = new GridPane();
+			secondRoot.getChildren().add(mainPane);
+			secondaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent event) {
+					killProcess = true;
+					System.out.println("Cancelled.");
+					secondaryStage.close();
+				}
+			});
 
-		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				killProcess=true;
-				System.out.println("Cancelled.");
-				secondaryStage.close();
-			}
+			pi = new ProgressIndicator();
+			pi.setMinWidth(140);
+			pi.setProgress(-1);
+			HBox hb = new HBox();
+			final Label plabel = new Label("Building images... Please wait.");
+			hb.getChildren().add(plabel);
+			hb.getChildren().add(pi);
+			hb.setAlignment(Pos.CENTER);
+			hb.setPadding(new Insets(20, 20, 20, 20));
+			mainPane.setAlignment(Pos.CENTER);
+			mainPane.add(hb, 0, 0);
+
+			final Button cancelButton = new Button("Cancel");
+			mainPane.add(cancelButton, 3, 1);
+
+			cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					killProcess = true;
+					System.out.println("Cancelled.");
+					secondaryStage.close();
+				}
+			});
+
+			secondaryStage.setScene(scene);
 		});
-		
-		secondaryStage.setScene(scene);
-		});
-		
+
 		long tstart = System.currentTimeMillis();
-		
+
 		root = new SplitPane();
 		BorderPane rhs = new BorderPane();
 		root.setOrientation(Orientation.HORIZONTAL);
@@ -146,18 +148,21 @@ public class ImageGallery {
 		grid.add(speciesList, 1, 0);
 		grid.add(new Label("Raster type: "), 0, 1);
 		grid.add(rasterTypeComboBox, 1, 1);
-		
+
 		save = new Button("Save Image");
-		
-		//if(selImg==null){save.setDisable(true);}
-		//else{
+
+		// if(selImg==null){save.setDisable(true);}
+		// else{
 		save.setOnAction((event) -> {
-			
-			if(selImg==null){
-				ErrorHandler.showWarning("No image selected", "No image has been selected.  Please click on the image you would like to save.");
+
+			if (selImg == null) {
+				ErrorHandler
+						.showWarning(
+								"No image selected",
+								"No image has been selected.  Please click on the image you would like to save.");
 				return;
 			}
-			
+
 			FileChooser fc = new FileChooser();
 			List<FileChooser.ExtensionFilter> filters = new ArrayList<FileChooser.ExtensionFilter>();
 			filters.add(new FileChooser.ExtensionFilter("PNG files", "*.png"));
@@ -178,8 +183,8 @@ public class ImageGallery {
 				}
 			}
 		});
-		//}
-		
+		// }
+
 		grid.add(save, 1, 3);
 
 		ScrollPane gallery = new ScrollPane();
@@ -188,21 +193,47 @@ public class ImageGallery {
 		tile.setHgap(8);
 		tile.setVgap(8);
 		// tile.setStyle(cssBordering);
-		
-		tile.getChildren().add(addTile(new File(spref.getPresenceFiles().get(species))));
-		tile.getChildren().add(addTile(new File(spref.getAgeFiles().get(species))));
-		tile.getChildren().add(addTile(new File(spref.getHabitatFiles().get(species))));
-		tile.getChildren().add(addTile(new File(spref.getReferenceFiles().get(species))));
-		
-		if(!spref.getManagementFiles().get(species).equalsIgnoreCase("None")){
-			tile.getChildren().add(addTile(new File(spref.getManagementFiles().get(species))));
+
+		if (species.equalsIgnoreCase("ALL")) {
+			for (String sp : spref.getSpeciesList()) {
+				tile.getChildren().add(
+						addTile(new File(spref.getPresenceFiles().get(sp))));
+				tile.getChildren().add(
+						addTile(new File(spref.getAgeFiles().get(sp))));
+				tile.getChildren().add(
+						addTile(new File(spref.getHabitatFiles().get(sp))));
+				tile.getChildren().add(
+						addTile(new File(spref.getReferenceFiles().get(sp))));
+				if (!spref.getManagementFiles().get(sp).equalsIgnoreCase("None")) {
+					tile.getChildren().add(
+							addTile(new File(spref.getManagementFiles().get(sp))));
+				}
+			}
+		} else {
+
+			tile.getChildren().add(
+					addTile(new File(spref.getPresenceFiles().get(species))));
+			tile.getChildren().add(
+					addTile(new File(spref.getAgeFiles().get(species))));
+			tile.getChildren().add(
+					addTile(new File(spref.getHabitatFiles().get(species))));
+			tile.getChildren().add(
+					addTile(new File(spref.getReferenceFiles().get(species))));
+			if (!spref.getManagementFiles().get(species).equalsIgnoreCase("None")) {
+				tile.getChildren().add(
+						addTile(new File(spref.getManagementFiles().get(species))));
+			}
 		}
 
 		File folder = new File(path);
 		String filter = rasterTypeComboBox.getValue().toLowerCase();
 		ArrayList<String> filterList = new ArrayList<String>();
-		if(!filter.equalsIgnoreCase("all")){filterList.add(".*" + filter + ".*");}
-		if(!species.equalsIgnoreCase("all")){filterList.add(".*" + species.toLowerCase() + ".*");}
+		if (!filter.equalsIgnoreCase("all")) {
+			filterList.add(".*" + filter + ".*");
+		}
+		if (!species.equalsIgnoreCase("all")) {
+			filterList.add(".*" + species.toLowerCase() + ".*");
+		}
 		filterList.add(".*\\.txt$");
 		File[] listOfFiles = folder.listFiles(new ListFilter(filterList));
 
@@ -213,42 +244,47 @@ public class ImageGallery {
 
 		int ct = 0;
 		double total = (double) listOfFiles.length;
-		
+
 		for (final File file : listOfFiles) {
-			if(killProcess){break;}
-			if(first && System.currentTimeMillis()-tstart > 1000){
-				Platform.runLater(()->{secondaryStage.show();});
+			if (killProcess) {
+				break;
+			}
+			if (first && System.currentTimeMillis() - tstart > 1000) {
+				Platform.runLater(() -> {
+					secondaryStage.show();
+				});
 				first = false;
 			}
 			Label label = new Label(file.getName());
 			ImageView imageView = null;
-			
-			if(file.getName().toLowerCase().contains("frequency") || file.getName().toLowerCase().contains("probability")){
+
+			if (file.getName().toLowerCase().contains("frequency")
+					|| file.getName().toLowerCase().contains("probability")) {
 				try {
-					imageView = new Raster(file).continuousImageView_byWidth(180);
+					imageView = new Raster(file)
+							.continuousImageView_byWidth(180);
 				} catch (IOException e) {
 					continue;
 				}
-			}
-			else{
+			} else {
 				try {
 					imageView = new Raster(file).discreteImageView_byWidth(180);
 				} catch (IOException e) {
 					continue;
 				}
 			}
-			
+
 			label.setContentDisplay(ContentDisplay.TOP);
 			label.setGraphic(imageView);
 			addClickBehaviour(label, path);
 			// imageView.setStyle(cssBordering);
 			tile.getChildren().add(label);
 			ct++;
-			pi.setProgress((double) ct/total);
+			pi.setProgress((double) ct / total);
 
 		}
-		
-		killProcess=false;
+
+		killProcess = false;
 
 		gallery.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Horizontal
 		gallery.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Vertical
@@ -261,7 +297,7 @@ public class ImageGallery {
 
 		rhs.setTop(grid);
 		rhs.setCenter(gallery);
-		
+
 		TilePane tmp = new TilePane();
 		Label tmptxt = new Label("Click thumbnails for larger image");
 		tmptxt.setAlignment(Pos.CENTER);
@@ -271,7 +307,9 @@ public class ImageGallery {
 
 		root.getItems().addAll(lhs, rhs);
 		parent.getImageGalleryTab().setContent(root);
-		Platform.runLater(()->{secondaryStage.close();});
+		Platform.runLater(() -> {
+			secondaryStage.close();
+		});
 	}
 
 	private Label addClickBehaviour(Label label, String path) {
@@ -284,41 +322,45 @@ public class ImageGallery {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
 					if (mouseEvent.getClickCount() == 1) {
-						
-						if(selected!=null){
+
+						if (selected != null) {
 							Label old_select = selected;
-							old_select.setStyle("-fx-border-color: transparent;");
+							old_select
+									.setStyle("-fx-border-color: transparent;");
 						}
 
 						String str = path + "/" + label.getText();
 						ImageView x_imageView = null;
-						
-						
-						if(str.toLowerCase().contains("frequency")||str.toLowerCase().contains("hsm")){
+
+						if (str.toLowerCase().contains("frequency")
+								|| str.toLowerCase().contains("hsm")) {
 							try {
-								x_imageView = new Raster(str).continuousImageView_byHeight((int) root.getHeight()-10);
-								//save.setDisable(false);
+								x_imageView = new Raster(str)
+										.continuousImageView_byHeight((int) root
+												.getHeight() - 10);
+								// save.setDisable(false);
+							} catch (IOException e) {
+								ErrorHandler.showException(e);
+							}
+						} else {
+							try {
+								x_imageView = new Raster(str)
+										.discreteImageView_byHeight((int) root
+												.getHeight() - 10);
+								// save.setDisable(false);
 							} catch (IOException e) {
 								ErrorHandler.showException(e);
 							}
 						}
-						else{
-							try {
-								x_imageView = new Raster(str).discreteImageView_byHeight((int) root.getHeight()-10);
-								//save.setDisable(false);
-							} catch (IOException e) {
-								ErrorHandler.showException(e);
-							}
-						}
-						
+
 						x_imageView.setSmooth(true);
 						x_imageView.setPreserveRatio(true);
-						
-						selImg=x_imageView;
-						
+
+						selImg = x_imageView;
+
 						setImagePan(x_imageView);
 						lhs.setCenter(x_imageView);
-						
+
 						selected = (Label) mouseEvent.getSource();
 						selected.setStyle("-fx-border-color: red;");
 					}
@@ -386,9 +428,14 @@ public class ImageGallery {
 	public void setSpreadPropertiesReference(SpreadProperties sprop) {
 		this.spref = sprop;
 		path = spref.getOutputFolder();
-		
+
 		if (!spref.getSpeciesList().isEmpty()) {
-			species = spref.getSpeciesList().get(0);
+			if (spref.getSpeciesList().size() == 1) {
+				species = spref.getSpeciesList().get(0);
+			} else {
+				species = "ALL";
+			}
+
 			ObservableList<String> speciesOptions = FXCollections
 					.observableArrayList();
 			speciesOptions.add("ALL");
@@ -416,31 +463,32 @@ public class ImageGallery {
 	public void setParentGUI(MainGUI gui) {
 		this.parent = gui;
 	}
-	
-	private Label addTile(File file){
+
+	private Label addTile(File file) {
 		Label label = new Label(file.getName());
 		ImageView imageView = null;
-		
-		if(file.getName().toLowerCase().contains("freq") || file.getName().toLowerCase().contains("probability")||file.getName().toLowerCase().contains("hsm")){
+
+		if (file.getName().toLowerCase().contains("freq")
+				|| file.getName().toLowerCase().contains("probability")
+				|| file.getName().toLowerCase().contains("hsm")) {
 			try {
 				imageView = new Raster(file).continuousImageView_byWidth(200);
 			} catch (IOException e) {
 				return null;
 			}
-		}
-		else{
+		} else {
 			try {
 				imageView = new Raster(file).discreteImageView_byWidth(200);
 			} catch (IOException e) {
 				return null;
 			}
 		}
-		
+
 		label.setContentDisplay(ContentDisplay.TOP);
 		label.setGraphic(imageView);
 		addClickBehaviour(label, file.getParentFile().toString());
 		// imageView.setStyle(cssBordering);
 		return label;
 	}
-	
+
 }

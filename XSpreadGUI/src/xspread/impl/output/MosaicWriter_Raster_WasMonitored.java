@@ -31,7 +31,7 @@ public class MosaicWriter_Raster_WasMonitored extends MosaicWriter_Raster {
 		if (p.hasNoData()) {
 			return super.nodata;
 		} else {
-			return p.getMaxControl().ordinal();
+			return p.getMaxControl(species).ordinal();
 		}
 	}
 }

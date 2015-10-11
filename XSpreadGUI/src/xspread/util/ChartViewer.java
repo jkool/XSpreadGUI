@@ -81,6 +81,7 @@ public class ChartViewer {
 		fieldLookup.put("No data", "Ndata");
 		fieldLookup.put("Cost", "Cost");
 		fieldLookup.put("Labour", "Labour");
+		fieldLookup.put("Run", "RunID");
 		
 		final ComboBox<String> speciesComboBox = new ComboBox<String>();
 		speciesComboBox.getItems().addAll("ALL");
@@ -112,7 +113,7 @@ public class ChartViewer {
 		partitionComboBox.getItems().addAll("None","Time", "Distance", "Rate", "Replicate",
 				"Patches infested by species", "Patches infested by any",
 				"Undetected Infestations", "Ground control", "Containment",
-				"Cost", "Labour");
+				"Cost", "Labour", "Run");
 		partitionComboBox.setValue("None");
 		partitionComboBox.setOnAction((event) -> {
 			partitionBy = partitionComboBox.getSelectionModel().getSelectedItem();
@@ -259,6 +260,7 @@ public class ChartViewer {
 			speciesList.setOnAction(event -> {
 				if (!species.equals(speciesList.getValue())) {
 					species = speciesList.getValue();
+					table = species + "_TraceFile.csv";
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {

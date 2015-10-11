@@ -79,7 +79,7 @@ public class RasterMosaic implements Mosaic, Cloneable {
 			a.put(ControlType.CONTAINMENT, 0);
 			a.put(ControlType.CONTAINMENT_CORE, 0);
 		for(Patch p:patches.values()){
-			if(p.getControls().contains(ControlType.GROUND_CONTROL)){a.put(ControlType.GROUND_CONTROL,a.get(ControlType.GROUND_CONTROL)+1);}
+			if(p.getControls(species).contains(ControlType.GROUND_CONTROL)){a.put(ControlType.GROUND_CONTROL,a.get(ControlType.GROUND_CONTROL)+1);}
 			if(p.getControls().contains(ControlType.CONTAINMENT)){a.put(ControlType.CONTAINMENT,a.get(ControlType.CONTAINMENT)+1);}
 			if(p.getControls().contains(ControlType.CONTAINMENT_CORE)){a.put(ControlType.CONTAINMENT_CORE,a.get(ControlType.CONTAINMENT_CORE)+1);}
 		}}
@@ -2293,5 +2293,4 @@ public class RasterMosaic implements Mosaic, Cloneable {
 			}
 		}
 	}
-
 }
